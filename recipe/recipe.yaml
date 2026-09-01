@@ -19,7 +19,7 @@ build:
 
 requirements:
   host:
-    - python ${{ python_min }}
+    - python ${{ python_min }}.*
     - hatchling
     - pip
   run:
@@ -32,13 +32,14 @@ requirements:
     - boto3 >=1.34.120,<2.0.0
 
 tests:
-  - python:
-      imports:
-        - opentelemetry.instrumentation.sagemaker
-      pip_check: true
-      python_version:
-        - ${{ python_min }}
-        - "*"
+  - requirements:
+      run:
+        - python ${{ python_min }}.*
+        - boto3
+        - pip
+    script:
+      - python -c "import opentelemetry.instrumentation.sagemaker"
+      - pip check
 
 about:
   summary: OpenTelemetry SageMaker instrumentation
